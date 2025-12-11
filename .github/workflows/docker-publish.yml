@@ -14,8 +14,8 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  BASE_IMAGE_NAME: ${{ github.repository }}-base
-  APP_IMAGE_NAME: ${{ github.repository }}
+  BASE_IMAGE_NAME: fawney19/aether-base
+  APP_IMAGE_NAME: fawney19/aether
 
 jobs:
   check-base-changes:
