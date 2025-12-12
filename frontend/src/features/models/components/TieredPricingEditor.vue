@@ -39,7 +39,10 @@
               </option>
             </select>
           </template>
-          <span v-else class="font-medium">无上限</span>
+          <span
+            v-else
+            class="font-medium"
+          >无上限</span>
         </div>
         <Button
           v-if="localTiers.length > 1"
@@ -53,7 +56,10 @@
       </div>
 
       <!-- 价格输入 -->
-      <div :class="['grid gap-3', showCache1h ? 'grid-cols-5' : 'grid-cols-4']">
+      <div
+        class="grid gap-3"
+        :class="[showCache1h ? 'grid-cols-5' : 'grid-cols-4']"
+      >
         <div class="space-y-1">
           <Label class="text-xs">输入 ($/M)</Label>
           <Input
@@ -102,7 +108,10 @@
             @update:model-value="(v) => updateCacheRead(index, v)"
           />
         </div>
-        <div v-if="showCache1h" class="space-y-1">
+        <div
+          v-if="showCache1h"
+          class="space-y-1"
+        >
           <Label class="text-xs text-muted-foreground">1h 缓存创建</Label>
           <Input
             :model-value="getCache1hDisplay(index)"
@@ -129,7 +138,10 @@
     </Button>
 
     <!-- 验证提示 -->
-    <p v-if="validationError" class="text-xs text-destructive">
+    <p
+      v-if="validationError"
+      class="text-xs text-destructive"
+    >
       {{ validationError }}
     </p>
   </div>

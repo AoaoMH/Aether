@@ -1,15 +1,21 @@
 <template>
   <Dialog
     :model-value="open"
-    @update:model-value="handleClose"
     :title="isEditing ? '编辑模型配置' : '添加模型'"
     :description="isEditing ? '修改模型价格和能力配置' : '为此 Provider 添加模型实现'"
     :icon="isEditing ? SquarePen : Layers"
     size="xl"
+    @update:model-value="handleClose"
   >
-    <form @submit.prevent="handleSubmit" class="space-y-4">
+    <form
+      class="space-y-4"
+      @submit.prevent="handleSubmit"
+    >
       <!-- 添加模式：选择全局模型 -->
-      <div v-if="!isEditing" class="space-y-2">
+      <div
+        v-if="!isEditing"
+        class="space-y-2"
+      >
         <Label for="global-model">选择模型 *</Label>
         <Select
           v-model:open="globalModelSelectOpen"
@@ -30,25 +36,41 @@
             </SelectItem>
           </SelectContent>
         </Select>
-        <p v-if="availableGlobalModels.length === 0 && !loadingGlobalModels" class="text-xs text-muted-foreground">
+        <p
+          v-if="availableGlobalModels.length === 0 && !loadingGlobalModels"
+          class="text-xs text-muted-foreground"
+        >
           所有全局模型已添加到此 Provider
         </p>
       </div>
 
       <!-- 编辑模式：显示模型信息 -->
-      <div v-else class="rounded-lg border bg-muted/30 p-4">
+      <div
+        v-else
+        class="rounded-lg border bg-muted/30 p-4"
+      >
         <div class="flex items-start justify-between">
           <div>
-            <p class="font-semibold text-lg">{{ editingModel?.global_model_display_name || editingModel?.provider_model_name }}</p>
-            <p class="text-sm text-muted-foreground font-mono">{{ editingModel?.provider_model_name }}</p>
+            <p class="font-semibold text-lg">
+              {{ editingModel?.global_model_display_name || editingModel?.provider_model_name }}
+            </p>
+            <p class="text-sm text-muted-foreground font-mono">
+              {{ editingModel?.provider_model_name }}
+            </p>
           </div>
         </div>
       </div>
 
       <!-- 价格配置 -->
       <div class="space-y-4">
-        <h4 class="font-semibold text-sm border-b pb-2">价格配置</h4>
-        <TieredPricingEditor ref="tieredPricingEditorRef" v-model="tieredPricing" :show-cache1h="showCache1h" />
+        <h4 class="font-semibold text-sm border-b pb-2">
+          价格配置
+        </h4>
+        <TieredPricingEditor
+          ref="tieredPricingEditorRef"
+          v-model="tieredPricing"
+          :show-cache1h="showCache1h"
+        />
 
         <!-- 按次计费 -->
         <div class="flex items-center gap-3 pt-2 border-t">
@@ -68,70 +90,80 @@
 
       <!-- 能力配置 -->
       <div class="space-y-4">
-        <h4 class="font-semibold text-sm border-b pb-2">能力配置</h4>
+        <h4 class="font-semibold text-sm border-b pb-2">
+          能力配置
+        </h4>
 
         <div class="grid grid-cols-2 gap-3">
           <label class="flex items-center gap-2 p-3 rounded-lg border cursor-pointer hover:bg-muted/50">
             <input
-              type="checkbox"
               v-model="form.supports_streaming"
+              type="checkbox"
               :indeterminate="form.supports_streaming === undefined"
               class="rounded"
-            />
+            >
             <Zap class="w-4 h-4 text-muted-foreground shrink-0" />
             <span class="text-sm font-medium">流式输出</span>
           </label>
           <label class="flex items-center gap-2 p-3 rounded-lg border cursor-pointer hover:bg-muted/50">
             <input
-              type="checkbox"
               v-model="form.supports_image_generation"
+              type="checkbox"
               :indeterminate="form.supports_image_generation === undefined"
               class="rounded"
-            />
+            >
             <Image class="w-4 h-4 text-muted-foreground shrink-0" />
             <span class="text-sm font-medium">图像生成</span>
           </label>
           <label class="flex items-center gap-2 p-3 rounded-lg border cursor-pointer hover:bg-muted/50">
             <input
-              type="checkbox"
               v-model="form.supports_vision"
+              type="checkbox"
               :indeterminate="form.supports_vision === undefined"
               class="rounded"
-            />
+            >
             <Eye class="w-4 h-4 text-muted-foreground shrink-0" />
             <span class="text-sm font-medium">视觉理解</span>
           </label>
           <label class="flex items-center gap-2 p-3 rounded-lg border cursor-pointer hover:bg-muted/50">
             <input
-              type="checkbox"
               v-model="form.supports_function_calling"
+              type="checkbox"
               :indeterminate="form.supports_function_calling === undefined"
               class="rounded"
-            />
+            >
             <Wrench class="w-4 h-4 text-muted-foreground shrink-0" />
             <span class="text-sm font-medium">工具调用</span>
           </label>
           <label class="flex items-center gap-2 p-3 rounded-lg border cursor-pointer hover:bg-muted/50">
             <input
-              type="checkbox"
               v-model="form.supports_extended_thinking"
+              type="checkbox"
               :indeterminate="form.supports_extended_thinking === undefined"
               class="rounded"
-            />
+            >
             <Brain class="w-4 h-4 text-muted-foreground shrink-0" />
             <span class="text-sm font-medium">深度思考</span>
           </label>
         </div>
       </div>
-
     </form>
 
     <template #footer>
-      <Button variant="outline" @click="handleClose(false)">
+      <Button
+        variant="outline"
+        @click="handleClose(false)"
+      >
         取消
       </Button>
-      <Button @click="handleSubmit" :disabled="submitting || (!isEditing && !form.global_model_id)">
-        <Loader2 v-if="submitting" class="w-4 h-4 mr-2 animate-spin" />
+      <Button
+        :disabled="submitting || (!isEditing && !form.global_model_id)"
+        @click="handleSubmit"
+      >
+        <Loader2
+          v-if="submitting"
+          class="w-4 h-4 mr-2 animate-spin"
+        />
         {{ isEditing ? '保存' : '添加' }}
       </Button>
     </template>
@@ -141,10 +173,17 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 import { Eye, Wrench, Brain, Zap, Loader2, Image, Layers, SquarePen } from 'lucide-vue-next'
-import { Dialog, Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui'
-import Button from '@/components/ui/button.vue'
-import Input from '@/components/ui/input.vue'
-import Label from '@/components/ui/label.vue'
+import {
+  Dialog,
+  Button,
+  Input,
+  Label,
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from '@/components/ui'
 import { useToast } from '@/composables/useToast'
 import { parseNumberInput } from '@/utils/form'
 import { createModel, updateModel, getProviderModels } from '@/api/endpoints/models'
